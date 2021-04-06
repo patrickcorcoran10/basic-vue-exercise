@@ -26,7 +26,6 @@ export default {
   },
   methods: {
     letterInput() {
-      console.log("input", this.password)
       if (this.password.length >= 16 && this.password.length <= 30) {
           this.goodLength = true;
       } else {
@@ -57,7 +56,7 @@ export default {
         this.containsPassword = false
       }
       // Conditional for the Rendering
-      if (this.goodLength && this.hasUpper && this.hasLower && this.hasSpecial && !this.containsPassword && this.password != 0) {
+      if (this.goodLength && this.hasUpper && this.hasLower && this.hasSpecial && !this.containsPassword && this.password.length != 0) {
         this.goodPassword = true;
         this.badPassword = false;
       } else {
@@ -82,7 +81,6 @@ export default {
   },
 }
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
  .badPassword, .badPassword:focus {
     outline: none !important;
