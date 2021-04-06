@@ -4,7 +4,7 @@
     <br>
     <input placeholder="Password" type="password" v-on:keyup.prevent="letterInput" v-model="password" v-bind:class="{badPassword : badPassword, goodPassword : goodPassword}">
     <br>
-    <button @click="testSubmit">Test</button>
+    <button @click.prevent="testSubmit">Test</button>
     </div>
 </template>
 
@@ -20,13 +20,14 @@ export default {
       goodLength: false,
       hasUpper: false,
       hasLower: false,
-      hasSpecial: false
+      hasSpecial: false,
+      containsPassword: false,
     }
   },
   methods: {
     letterInput() {
       console.log("input", this.password)
-      if (this.password.length >= 5 && this.password.length <= 12) {
+      if (this.password.length >= 16 && this.password.length <= 30) {
           this.goodLength = true;
       } else {
         this.goodLength = false;
@@ -49,8 +50,14 @@ export default {
       } else {
         this.hasSpecial = false
       }
+      // Contains "password" Conditional
+      if (this.password.includes("password")) {
+        this.containsPassword = true
+      } else {
+        this.containsPassword = false
+      }
       // Conditional for the Rendering
-      if (this.goodLength && this.hasUpper && this.hasLower && this.hasSpecial) {
+      if (this.goodLength && this.hasUpper && this.hasLower && this.hasSpecial && !this.containsPassword && this.password != 0) {
         this.goodPassword = true;
         this.badPassword = false;
       } else {
@@ -61,15 +68,15 @@ export default {
     
     testSubmit() {
       if (this.goodPassword === true) {
+        this.goodPassword = false;
+        this.badPassword = true;
+        this.password = '';
         alert("Success", this.password)
-        this.password = '';
-        this.goodPassword === false;
-        this.badPassword === true;
       } else {
-        alert("Failure")
+        this.goodPassword = false;
+        this.badPassword = true;
         this.password = '';
-        this.goodPassword === false;
-        this.badPassword === true;
+        alert("Failure")
       }
     }
   },
@@ -77,12 +84,12 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-input, .badPassword:focus {
+ .badPassword, .badPassword:focus {
     outline: none !important;
     border:1px solid red;
     box-shadow: 0 0 10px #719ECE;
 }
-.goodPassword:focus {
+.goodPassword {
     outline: none !important;
     border:1px solid green;
     box-shadow: 0 0 10px #719ECE;
